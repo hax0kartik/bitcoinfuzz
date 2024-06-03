@@ -2,7 +2,7 @@ HEADERS :=  $(wildcard $(shell find bitcoin -type f -name '*.h')) compiler.h tar
 SOURCES :=  $(wildcard $(shell find bitcoin -type f -name '*.cpp')) compiler.cpp targets/miniscript_policy.cpp targets/miniscript_string.cpp targets/block_des.cpp targets/prefilledtransaction.cpp
 
 bitcoinfuzz: cargo go $(HEADERS) $(SOURCES) fuzzer.cpp
-	clang++ -O3 -g0 -Wall -fsanitize=address,fuzzer -DHAVE_GMTIME_R=1 -std=c++20 -march=native -L rust_bitcoin_lib/target/release -L btcd_lib -lbtcd_wrapper -lrust_bitcoin_lib -lpthread -ldl -flto -Ibitcoin $(SOURCES) fuzzer.cpp -o bitcoinfuzz
+	clang++ -O3 -g0 -Wall -fsanitize=address,fuzzer -DHAVE_GMTIME_R=1 -std=c++20 -march=native -Wl,-rpath,btcd_lib/,-rpath,rust_bitcoin_lib/target/release -L rust_bitcoin_lib/target/release -L btcd_lib -lbtcd_wrapper -lrust_bitcoin_lib -lpthread -ldl -flto -Ibitcoin $(SOURCES) fuzzer.cpp -o bitcoinfuzz
 
 cargo:
 	cd rust_bitcoin_lib && cargo build --release && cd ..
