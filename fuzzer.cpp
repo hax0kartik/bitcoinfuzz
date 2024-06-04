@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <cstdlib>
 #include <ctype.h>
 #include <iostream>
 #include <stdio.h>
@@ -23,9 +24,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         BlockDes(provider);
     } else if (target == "prefilledtransaction") {
         PrefilledTransactionTarget(provider);
-    } else {
-      std::exit(EXIT_SUCCESS);
     }
-    
+
     return 0; // Values other than 0 and -1 are reserved for future use.
 }
