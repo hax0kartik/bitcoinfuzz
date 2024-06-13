@@ -1,4 +1,4 @@
-CXX      =  clang++-18
+CXX      =  clang++
 HEADERS :=  $(wildcard $(shell find bitcoin -type f -name '*.h')) targets/bech32.h targets/tx_des.h targets/miniscript_string.h targets/block_des.h targets/prefilledtransaction.h
 SOURCES :=  $(wildcard $(shell find bitcoin -type f -name '*.cpp')) targets/bech32.cpp targets/tx_des.cpp targets/miniscript_string.cpp targets/block_des.cpp targets/prefilledtransaction.cpp
 OBJS    :=  $(patsubst %.cpp, build/%.o, $(SOURCES))
