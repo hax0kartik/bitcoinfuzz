@@ -31,7 +31,7 @@ libsecp256:
 	cd bitcoin/secp256k1 && \
 	(test ! -f "Makefile" && \
 	./autogen.sh && \
-	LDFLAGS="" ./configure --enable-module-schnorrsig --enable-benchmark=no --enable-module-recovery \
+	LDFLAGS=$(ORIGLDFLAGS) ./configure --enable-module-schnorrsig --enable-benchmark=no --enable-module-recovery \
 	--enable-static --disable-shared --enable-tests=no --enable-ctime-tests=no --enable-benchmark=no) || :
 	cd bitcoin/secp256k1 && make
 
