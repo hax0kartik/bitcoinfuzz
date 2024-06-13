@@ -49,5 +49,7 @@ jobs:
 
           make -j4
 
+          cat bitcoin/secp256k1/config.log
+
       - name: Test
         run: ./bitcoinfuzz -detect_leaks=0 -runs=0
