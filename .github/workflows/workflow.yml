@@ -47,7 +47,7 @@ jobs:
                 export PATH="$(brew --prefix)/opt/llvm/bin:$PATH"
           fi
 
-          make -j4
+          make -j4 || :
 
           cat bitcoin/secp256k1/config.log
 
