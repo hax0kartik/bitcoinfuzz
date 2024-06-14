@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdio.h>
 
+#include "typewrapper.h"
 #include "bech32.h"
 #include "../bitcoin/bech32.h"
 #include "../bitcoin/streams.h"
@@ -24,8 +25,8 @@ void Bech32(FuzzedDataProvider& provider)
 {
     std::vector<uint8_t> buffer{provider.ConsumeRemainingBytes<uint8_t>()};
 
-    std::string core{Bech32Core(buffer)};
-    std::string go_btcd{go_btcd_bech32(buffer.data(), buffer.size())};
+    PRETTY_TYPE_DEC(core, Bech32Core(buffer))
+    PRETTY_TYPE_DEC(btcd, std::string(go_btcd_bech32(buffer.data(), buffer.size())))
 
-    assert(go_btcd == core);
+    assert(btcd == core);
 }

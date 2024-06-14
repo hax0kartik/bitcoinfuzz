@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdio.h>
 
+#include "typewrapper.h"
 #include "tx_des.h"
 #include "../bitcoin/consensus/tx_check.h"
 #include "../bitcoin/consensus/validation.h"
@@ -32,7 +33,8 @@ void TransactionDes(FuzzedDataProvider& provider)
 {
     std::vector<uint8_t> buffer{provider.ConsumeRemainingBytes<uint8_t>()};
 
-    std::string core{TransactionDesCore(buffer)};
-    std::string go_btcd{go_btcd_des_tx(buffer.data(), buffer.size())};
-    assert(core == go_btcd);
+    PRETTY_TYPE_DEC(core, TransactionDesCore(buffer))
+    PRETTY_TYPE_DEC(btcd, std::string(go_btcd_des_tx(buffer.data(), buffer.size())))
+
+    assert(core == btcd);
 }

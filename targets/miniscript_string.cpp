@@ -3,6 +3,7 @@
 #include <iostream>
 #include <script/miniscript.h>
 
+#include "typewrapper.h"
 #include "miniscript_string.h"
 #include "../bitcoin/pubkey.h"
 #include "../bitcoin/key.h"
@@ -198,8 +199,10 @@ void MiniscriptFromString(FuzzedDataProvider& provider)
 {
     TEST_DATA.Init();
     std::string input_str{provider.ConsumeRemainingBytesAsString().c_str()};
-    const bool core{BitcoinCoreString(input_str)};
-    const bool rust_miniscript{rust_miniscript_from_str(input_str.c_str())};
+
+    PRETTY_TYPE_DEC(core, BitcoinCoreString(input_str))
+    PRETTY_TYPE_DEC(rust_miniscript, rust_miniscript_from_str(input_str.c_str()))
+
     assert(core == rust_miniscript);
 }
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdio.h>
 
+#include "typewrapper.h"
 #include "block_des.h"
 #include "../bitcoin/primitives/block.h"
 #include "../bitcoin/streams.h"
@@ -28,10 +29,10 @@ void BlockDes(FuzzedDataProvider& provider)
 {
     std::vector<uint8_t> buffer{provider.ConsumeRemainingBytes<uint8_t>()};
 
-    std::string core{BlockDesCore(buffer)};
-    std::string rust_bitcoin{rust_bitcoin_des_block(buffer.data(), buffer.size())};
-    std::string go_btcd{go_btcd_des_block(buffer.data(), buffer.size())};
+    PRETTY_TYPE_DEC(core, BlockDesCore(buffer))
+    PRETTY_TYPE_DEC(rust_bitcoin, std::string(rust_bitcoin_des_block(buffer.data(), buffer.size())))
+    PRETTY_TYPE_DEC(btcd, std::string(go_btcd_des_block(buffer.data(), buffer.size())))
 
-    if (rust_bitcoin == "unsupported segwit version") return;
-    assert(go_btcd == rust_bitcoin && rust_bitcoin == core);
+    if (*rust_bitcoin == "unsupported segwit version") return;
+    assert(btcd == rust_bitcoin && rust_bitcoin == core);
 }
