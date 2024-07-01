@@ -14,6 +14,11 @@
 #include "targets/psbt.h"
 #include "targets/script.h"
 #include "targets/addrv2.h"
+<<<<<<< Updated upstream
+=======
+#include "targets/cmpctblocks.h"
+#include "targets/HeaderAndShortIds.h"
+>>>>>>> Stashed changes
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     FuzzedDataProvider provider(data, size);
@@ -37,6 +42,13 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
         Script(provider);
     } else if (target == "addrv2") {
         Addrv2(provider);
+<<<<<<< Updated upstream
+=======
+    } else if (target == "cmpctblocks") {
+        CmpctBlocks(provider);
+    } else if (target == "headerandshortids") {
+        HeaderAndShortIds(provider);
+>>>>>>> Stashed changes
     }
 
     return 0; // Values other than 0 and -1 are reserved for future use.

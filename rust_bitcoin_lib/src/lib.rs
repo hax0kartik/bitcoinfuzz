@@ -136,6 +136,55 @@ pub unsafe extern "C" fn rust_bitcoin_addrv2(data: *const u8, len: usize, actual
 }
 
 #[no_mangle]
+<<<<<<< Updated upstream
+=======
+pub unsafe extern "C" fn rust_bitcoin_headerandshortids(data: *const u8, len: usize) -> i32 {
+    // Safety: Ensure that the data pointer is valid for the given length
+    let data_slice = slice::from_raw_parts(data, len);
+
+    let res = deserialize_partial::<Block>(data_slice);
+
+    match res {
+        Ok(block) => {
+            let compact = HeaderAndShortIds::from_block(&block.0, 101, 2, &[]);
+
+            match compact {
+                Ok(c) => return (c.prefilled_txs.len() + c.short_ids.len()).try_into().unwrap(),
+                Err(e) => return -1,
+            }
+
+        },
+        Err(err) => {
+            if err.to_string().starts_with("unsupported segwit version") {
+                return -2;
+            }
+
+            return -1;
+        }
+    }
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn rust_bitcoin_cmpctblocks(data: *const u8, len: usize) -> i32 {
+    // Safety: Ensure that the data pointer is valid for the given length
+    let data_slice = slice::from_raw_parts(data, len);
+
+    let res = deserialize_partial::<HeaderAndShortIds>(data_slice);
+
+    match res {
+        Ok(block) => return (block.0.prefilled_txs.len() + block.0.short_ids.len()).try_into().unwrap(),
+        Err(err) => {
+            if err.to_string().starts_with("unsupported segwit version") {
+                return -2;
+            }
+
+            return -1;
+        }
+    }
+}
+
+#[no_mangle]
+>>>>>>> Stashed changes
 pub unsafe extern "C" fn rust_miniscript_from_str_check_key(input: *const c_char) -> *mut c_char {
     let Ok(desc) = c_str_to_str(input) else {
         return str_to_c_string("0");
